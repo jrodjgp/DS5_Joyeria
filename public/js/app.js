@@ -4,15 +4,400 @@ class EstherApp {
         this.currentUser = null;
         this.cart = [];
         this.init();
+        // En el constructor de EstherApp, después de init():
+        console.log('🎯 Elementos DOM encontrados:');
+        console.log('Login button:', document.getElementById('login-btn'));
+        console.log('Cart button:', document.getElementById('cart-btn'));
+        console.log('Close cart:', document.querySelector('.close-cart'));
+        console.log('Close modal:', document.querySelector('.close-modal'));
+        console.log('Checkout button:', document.getElementById('checkout-btn'));
+        console.log('Login modal:', document.getElementById('login-modal'));
+        console.log('Cart sidebar:', document.getElementById('cart-sidebar'));
     }
 
     async init() {
         console.log('🚀 Iniciando Esther Accessories...');
-        this.setupEventListeners();
         await this.checkAuth();
-        await this.loadInitialData();
+        this.setupEventListeners();
         this.setupNavigation();
+        await this.loadInitialData();
     }
+    // ========== SECCIONES FALTANTES ==========
+
+async renderColecciones() {
+    const content = document.getElementById('content');
+    
+    content.innerHTML = `
+        <section class="colecciones-section">
+            <div class="container">
+                <div class="colecciones-header">
+                    <h2><i class="fas fa-crown"></i> Nuestras Colecciones Exclusivas</h2>
+                    <p>Descubre las líneas más destacadas de Esther Accessories</p>
+                </div>
+                
+                <div class="colecciones-grid">
+                    <div class="coleccion-card grande">
+                        <div class="coleccion-imagen" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                            <div class="coleccion-overlay">
+                                <h3>Colección Oro</h3>
+                                <p>Piezas en oro 18k y 24k con diamantes y piedras preciosas</p>
+                                <button onclick="app.filterColeccion('oro')" class="btn-coleccion">
+                                    Ver Colección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="coleccion-card">
+                        <div class="coleccion-imagen" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                            <div class="coleccion-overlay">
+                                <h3>Colección Plata</h3>
+                                <p>Plata esterlina 925 con diseños modernos</p>
+                                <button onclick="app.filterColeccion('plata')" class="btn-coleccion">
+                                    Ver Colección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="coleccion-card">
+                        <div class="coleccion-imagen" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                            <div class="coleccion-overlay">
+                                <h3>Línea Romántica</h3>
+                                <p>Diseños con corazones, flores y motivos amorosos</p>
+                                <button onclick="app.filterColeccion('romantica')" class="btn-coleccion">
+                                    Ver Colección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="coleccion-card">
+                        <div class="coleccion-imagen" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=60');">
+                            <div class="coleccion-overlay">
+                                <h3>Colección Minimalista</h3>
+                                <p>Diseños simples y elegantes para el día a día</p>
+                                <button onclick="app.filterColeccion('minimalista')" class="btn-coleccion">
+                                    Ver Colección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="colecciones-info">
+                    <h3>Colecciones por Temporada</h3>
+                    <div class="temporadas">
+                        <div class="temporada">
+                            <h4><i class="fas fa-sun"></i> Primavera-Verano 2024</h4>
+                            <p>Colores vibrantes y diseños frescos inspirados en la naturaleza.</p>
+                        </div>
+                        <div class="temporada">
+                            <h4><i class="fas fa-snowflake"></i> Otoño-Invierno 2024</h4>
+                            <p>Tonos cálidos y piezas llamativas para las festividades.</p>
+                        </div>
+                        <div class="temporada">
+                            <h4><i class="fas fa-gem"></i> Edición Limitada</h4>
+                            <p>Piezas exclusivas disponibles en cantidades limitadas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+async renderSobre() {
+    const content = document.getElementById('content');
+    
+    content.innerHTML = `
+        <section class="sobre-section">
+            <div class="container">
+                <div class="sobre-header">
+                    <h2><i class="fas fa-store"></i> La Maison Esther</h2>
+                    <p>Donde la tradición se encuentra con la innovación</p>
+                </div>
+                
+                <div class="sobre-content">
+                    <div class="sobre-historia">
+                        <h3>Nuestra Historia</h3>
+                        <p>Fundada en 1995 por Esther Rodríguez, nuestra maison nació con la visión de crear joyas que contaran historias. Lo que comenzó como un pequeño taller familiar en el corazón de la Ciudad de México, hoy se ha convertido en un referente de la joyería artesanal de alta gama.</p>
+                        
+                        <p>Cada pieza de Esther Accessories es el resultado de horas de trabajo dedicado, donde la pasión por el detalle y el respeto por las técnicas tradicionales se combinan con un diseño contemporáneo y visionario.</p>
+                        
+                        <div class="sobre-logros">
+                            <div class="logro">
+                                <i class="fas fa-award"></i>
+                                <div>
+                                    <h4>+25 Años</h4>
+                                    <p>De excelencia en joyería</p>
+                                </div>
+                            </div>
+                            <div class="logro">
+                                <i class="fas fa-hands"></i>
+                                <div>
+                                    <h4>Artesanos Expertos</h4>
+                                    <p>Equipo de maestros joyeros</p>
+                                </div>
+                            </div>
+                            <div class="logro">
+                                <i class="fas fa-gem"></i>
+                                <div>
+                                    <h4>Materiales Éticos</h4>
+                                    <p>Procedencia certificada</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sobre-valores">
+                        <h3>Nuestros Valores</h3>
+                        <div class="valores-grid">
+                            <div class="valor-card">
+                                <i class="fas fa-handshake"></i>
+                                <h4>Calidad Inigualable</h4>
+                                <p>Utilizamos sólo los mejores materiales: oro de 18k y 24k, plata esterlina 925, diamantes certificados y piedras preciosas de origen ético.</p>
+                            </div>
+                            <div class="valor-card">
+                                <i class="fas fa-heart"></i>
+                                <h4>Artesanía Detallada</h4>
+                                <p>Cada pieza es elaborada a mano por nuestros maestros joyeros, con atención meticulosa a cada detalle.</p>
+                            </div>
+                            <div class="valor-card">
+                                <i class="fas fa-leaf"></i>
+                                <h4>Sostenibilidad</h4>
+                                <p>Nos comprometemos con prácticas sostenibles y materiales provenientes de fuentes responsables.</p>
+                            </div>
+                            <div class="valor-card">
+                                <i class="fas fa-star"></i>
+                                <h4>Personalización</h4>
+                                <p>Creamos piezas únicas que reflejan la personalidad y estilo de cada cliente.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sobre-equipo">
+                        <h3>Conoce a Nuestro Equipo</h3>
+                        <div class="equipo-grid">
+                            <div class="miembro-equipo">
+                                <div class="miembro-foto" style="background: linear-gradient(45deg, #D4AF37, #B8860B);">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h4>Esther Rodríguez</h4>
+                                <p>Fundadora y Directora Creativa</p>
+                                <p class="miembro-desc">Con más de 30 años de experiencia en diseño de joyas.</p>
+                            </div>
+                            <div class="miembro-equipo">
+                                <div class="miembro-foto" style="background: linear-gradient(45deg, #C0C0C0, #E8E8E8);">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <h4>Carlos Mendoza</h4>
+                                <p>Maestro Joyero</p>
+                                <p class="miembro-desc">Especialista en técnicas tradicionales de orfebrería.</p>
+                            </div>
+                            <div class="miembro-equipo">
+                                <div class="miembro-foto" style="background: linear-gradient(45deg, #800020, #A52A2A);">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <h4>Ana López</h4>
+                                <p>Diseñadora</p>
+                                <p class="miembro-desc">Crea diseños innovadores que fusionan tradición y modernidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+async renderContacto() {
+    const content = document.getElementById('content');
+    
+    content.innerHTML = `
+        <section class="contacto-section">
+            <div class="container">
+                <div class="contacto-header">
+                    <h2><i class="fas fa-phone"></i> Contacto</h2>
+                    <p>Estamos aquí para ayudarte en cada paso</p>
+                </div>
+                
+                <div class="contacto-grid">
+                    <div class="contacto-info">
+                        <div class="info-card">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Visítanos</h4>
+                                <p>Av. Paseo de la Reforma 123</p>
+                                <p>Col. Juárez, Cuauhtémoc</p>
+                                <p>Ciudad de México, 06600</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Horarios</h4>
+                                <p><strong>Lunes a Viernes:</strong> 10:00 - 19:00</p>
+                                <p><strong>Sábados:</strong> 10:00 - 15:00</p>
+                                <p><strong>Domingos:</strong> Cerrado</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Teléfonos</h4>
+                                <p><strong>Ventas:</strong> +52 55 1234 5678</p>
+                                <p><strong>WhatsApp:</strong> +52 55 8765 4321</p>
+                                <p><strong>Servicio al cliente:</strong> 800 123 4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Correos Electrónicos</h4>
+                                <p><strong>Ventas:</strong> ventas@estheraccessories.com</p>
+                                <p><strong>Servicio al cliente:</strong> servicio@estheraccessories.com</p>
+                                <p><strong>Cotizaciones:</strong> cotizaciones@estheraccessories.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="redes-sociales">
+                            <h4>Síguenos</h4>
+                            <div class="redes-icons">
+                                <a href="https://www.instagram.com/esther_accessories_25" target="_blank" class="red-social">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="red-social">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="red-social">
+                                    <i class="fab fa-pinterest-p"></i>
+                                </a>
+                                <a href="#" class="red-social">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-formulario">
+                        <div class="form-card">
+                            <h3>Envíanos un Mensaje</h3>
+                            <p>¿Tienes preguntas? Escríbenos y te responderemos en menos de 24 horas.</p>
+                            
+                            <form id="contact-form">
+                                <div class="form-group">
+                                    <label for="contact-name">Nombre completo *</label>
+                                    <input type="text" id="contact-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-email">Correo electrónico *</label>
+                                    <input type="email" id="contact-email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-phone">Teléfono</label>
+                                    <input type="tel" id="contact-phone">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-subject">Asunto *</label>
+                                    <select id="contact-subject" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="consulta">Consulta general</option>
+                                        <option value="cotizacion">Cotización</option>
+                                        <option value="personalizacion">Personalización</option>
+                                        <option value="garantia">Garantía o reparación</option>
+                                        <option value="pedido">Estado de pedido</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact-message">Mensaje *</label>
+                                    <textarea id="contact-message" rows="5" required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mapa-section">
+                    <h3>Ubicación</h3>
+                    <div class="mapa-placeholder">
+                        <div class="mapa-info">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <div>
+                                <h4>Esther Accessories Boutique</h4>
+                                <p>Av. Paseo de la Reforma 123, Ciudad de México</p>
+                                <p><strong>Metro más cercano:</strong> Estación Insurgentes (Línea 1)</p>
+                                <p><strong>Estacionamiento:</strong> Disponible en el edificio</p>
+                            </div>
+                        </div>
+                        <div class="mapa-imagen">
+                            <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Mapa de ubicación">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+    
+    // Configurar el formulario de contacto
+    setTimeout(() => {
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.showNotification('Mensaje enviado. Te contactaremos pronto.', 'success');
+                contactForm.reset();
+            });
+        }
+    }, 100);
+}
+
+// Método para filtrar por colección (se llama desde los botones de colecciones)
+filterColeccion(tipo) {
+    // Redirigir al catálogo con filtro
+    this.loadSection('catalogo');
+    
+    // Después de cargar el catálogo, aplicar filtro
+    setTimeout(() => {
+        const categoryFilter = document.getElementById('category-filter');
+        const searchInput = document.getElementById('search-products');
+        
+        if (categoryFilter && searchInput) {
+            switch(tipo) {
+                case 'oro':
+                    categoryFilter.value = 'collares';
+                    searchInput.value = 'oro';
+                    break;
+                case 'plata':
+                    categoryFilter.value = 'pulseras';
+                    searchInput.value = 'plata';
+                    break;
+                case 'romantica':
+                    searchInput.value = 'corazón flor';
+                    break;
+                case 'minimalista':
+                    searchInput.value = 'simple elegante';
+                    break;
+            }
+            
+            // Disparar el evento de búsqueda
+            this.searchProducts();
+        }
+    }, 500);
+}
 
     // ========== AUTENTICACIÓN ==========
     async checkAuth() {
@@ -22,7 +407,7 @@ class EstherApp {
                 const response = await fetch(`${this.apiBase}/verify`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     this.currentUser = data.user;
@@ -30,25 +415,77 @@ class EstherApp {
                     await this.loadCart();
                 } else {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('user');
                 }
             } catch (error) {
                 console.warn('Token inválido:', error);
                 localStorage.removeItem('token');
+                localStorage.removeItem('user');
             }
         }
     }
 
     updateAuthUI() {
         const loginBtn = document.getElementById('login-btn');
-        if (loginBtn) {
-            if (this.currentUser) {
-                loginBtn.innerHTML = `<i class="fas fa-user"></i> ${this.currentUser.nombre.split(' ')[0]}`;
-                loginBtn.onclick = () => this.showUserMenu();
-            } else {
-                loginBtn.innerHTML = '<i class="fas fa-user"></i>';
-                loginBtn.onclick = () => this.showLoginModal();
+        const userAvatar = document.getElementById('user-avatar');
+        const userMenu = document.getElementById('user-menu');
+        const userMenuName = document.getElementById('user-menu-name');
+        const userMenuEmail = document.getElementById('user-menu-email');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (this.currentUser) {
+            // Ocultar botón login, mostrar avatar
+            loginBtn.style.display = 'none';
+            userAvatar.style.display = 'flex';
+
+            // Obtener iniciales
+            const initials = this.getInitials(this.currentUser.nombre);
+            userAvatar.textContent = initials;
+            userAvatar.title = this.currentUser.nombre;
+
+            // Llenar menú
+            if (userMenuName) userMenuName.textContent = this.currentUser.nombre;
+            if (userMenuEmail) userMenuEmail.textContent = this.currentUser.email;
+
+            // Eventos del avatar
+            if (userAvatar) {
+                userAvatar.onclick = (e) => {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('show');
+                };
             }
+
+            // Evento logout
+            if (logoutBtn) {
+                logoutBtn.onclick = (e) => {
+                    e.preventDefault();
+                    this.logout();
+                    userMenu.classList.remove('show');
+                };
+            }
+
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (userMenu && !userAvatar.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.remove('show');
+                }
+            });
+
+        } else {
+            // Mostrar botón login, ocultar avatar
+            loginBtn.style.display = 'flex';
+            if (userAvatar) userAvatar.style.display = 'none';
+            loginBtn.onclick = () => this.showLoginModal();
         }
+    }
+
+    getInitials(name) {
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase()
+            .substring(0, 2);
     }
 
     async login(email, password) {
@@ -58,9 +495,9 @@ class EstherApp {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
@@ -84,16 +521,16 @@ class EstherApp {
             this.showNotification('Las contraseñas no coinciden', 'error');
             return false;
         }
-        
+
         try {
             const response = await fetch(`${this.apiBase}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nombre, email, password })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 return await this.login(email, password);
             } else {
@@ -113,6 +550,7 @@ class EstherApp {
         this.updateAuthUI();
         this.updateCartUI();
         this.showNotification('Sesión cerrada', 'info');
+        this.loadSection('inicio');
     }
 
     // ========== NAVEGACIÓN ==========
@@ -122,12 +560,14 @@ class EstherApp {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const target = link.getAttribute('href').substring(1);
-                this.loadSection(target);
-                
+
                 // Actualizar clase activa
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
-                
+
+                // Cargar sección
+                this.loadSection(target);
+
                 // Cerrar menú móvil
                 const navMenu = document.querySelector('.nav-menu');
                 if (navMenu && navMenu.classList.contains('active')) {
@@ -135,11 +575,20 @@ class EstherApp {
                 }
             });
         });
-        
+
+        // Logo también lleva al inicio
+        document.querySelector('.logo-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.loadSection('inicio');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector('.nav-link[href="#inicio"]').classList.add('active');
+        });
+
         // Menú móvil
         const navToggle = document.getElementById('nav-toggle');
         if (navToggle) {
-            navToggle.addEventListener('click', () => {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const navMenu = document.querySelector('.nav-menu');
                 if (navMenu) {
                     navMenu.classList.toggle('active');
@@ -150,10 +599,12 @@ class EstherApp {
 
     async loadSection(section) {
         const content = document.getElementById('content');
+
+        // Mostrar loader
         content.innerHTML = '<div class="loader"><div class="spinner"></div></div>';
-        
+
         try {
-            switch(section) {
+            switch (section) {
                 case 'inicio':
                     await this.renderHome();
                     break;
@@ -168,6 +619,9 @@ class EstherApp {
                     break;
                 case 'contacto':
                     await this.renderContacto();
+                    break;
+                case 'checkout':
+                    await this.renderCheckout();
                     break;
                 default:
                     await this.renderHome();
@@ -187,6 +641,20 @@ class EstherApp {
                     <p>Descubre nuestras piezas más exclusivas</p>
                 </div>
                 <div class="catalogo-grid" id="featured-grid"></div>
+                
+                <div class="instagram-section" style="margin-top: 4rem;">
+                    <div class="container">
+                        <div class="instagram-header">
+                            <h2><i class="fab fa-instagram"></i> Síguenos en Instagram</h2>
+                            <p>@esther_accessories_25</p>
+                            <a href="https://www.instagram.com/esther_accessories_25" 
+                               target="_blank" 
+                               class="btn-instagram">
+                                <i class="fab fa-instagram"></i> Ver Galería
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </section>
         `;
         await this.loadFeaturedProducts();
@@ -216,15 +684,29 @@ class EstherApp {
                 <div class="catalogo-grid" id="catalogo-grid"></div>
             </section>
         `;
-        
+
         await this.loadProducts();
-        
-        // Event listeners para filtros
-        document.getElementById('search-btn').addEventListener('click', () => this.searchProducts());
-        document.getElementById('search-products').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.searchProducts();
-        });
-        document.getElementById('category-filter').addEventListener('change', () => this.loadProducts());
+
+        // Configurar eventos después de renderizar
+        setTimeout(() => {
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-products');
+            const categoryFilter = document.getElementById('category-filter');
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', () => this.searchProducts());
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.searchProducts();
+                });
+            }
+
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', () => this.loadProducts());
+            }
+        }, 100);
     }
 
     // ========== PRODUCTOS ==========
@@ -236,7 +718,7 @@ class EstherApp {
         try {
             const response = await fetch(`${this.apiBase}/productos?destacado=true`);
             const data = await response.json();
-            
+
             if (data.success) {
                 this.renderProducts(data.productos, 'featured-grid');
             }
@@ -247,11 +729,11 @@ class EstherApp {
 
     async loadProducts() {
         const category = document.getElementById('category-filter')?.value || 'all';
-        
+
         try {
             const response = await fetch(`${this.apiBase}/productos?categoria=${category}`);
             const data = await response.json();
-            
+
             if (data.success) {
                 this.renderProducts(data.productos, 'catalogo-grid');
             }
@@ -263,11 +745,11 @@ class EstherApp {
     async searchProducts() {
         const query = document.getElementById('search-products')?.value;
         if (!query) return;
-        
+
         try {
             const response = await fetch(`${this.apiBase}/buscar?q=${encodeURIComponent(query)}`);
             const data = await response.json();
-            
+
             if (data.success) {
                 this.renderProducts(data.productos, 'catalogo-grid');
             }
@@ -279,12 +761,12 @@ class EstherApp {
     renderProducts(productos, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        
+
         if (!productos || productos.length === 0) {
             container.innerHTML = '<div class="empty-state">No se encontraron productos</div>';
             return;
         }
-        
+
         container.innerHTML = productos.map(producto => `
             <div class="producto-card" data-id="${producto.id}">
                 ${producto.destacado ? '<div class="producto-badge destacado"><i class="fas fa-crown"></i> Destacado</div>' : ''}
@@ -332,7 +814,7 @@ class EstherApp {
         try {
             const response = await fetch(`${this.apiBase}/productos/${id}`);
             const data = await response.json();
-            
+
             if (data.success) {
                 const producto = data.producto;
                 alert(`${producto.nombre}\n\n${producto.descripcion}\n\nMateriales: ${producto.materiales}\nPrecio: $${producto.precio}`);
@@ -357,9 +839,9 @@ class EstherApp {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 this.cart = data.items;
                 this.updateCartUI();
@@ -375,13 +857,13 @@ class EstherApp {
             try {
                 const response = await fetch(`${this.apiBase}/productos/${productId}`);
                 const data = await response.json();
-                
+
                 if (data.success) {
                     const producto = data.producto;
-                    
+
                     // Verificar si ya está en el carrito
                     const existingIndex = this.cart.findIndex(item => item.producto_id == productId);
-                    
+
                     if (existingIndex > -1) {
                         this.cart[existingIndex].cantidad += 1;
                     } else {
@@ -396,7 +878,7 @@ class EstherApp {
                             tamaño: 'Único'
                         });
                     }
-                    
+
                     localStorage.setItem('guest_cart', JSON.stringify(this.cart));
                     this.updateCartUI();
                     this.showNotification('Producto agregado al carrito', 'success');
@@ -421,9 +903,9 @@ class EstherApp {
                     cantidad: 1
                 })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 await this.loadCart();
                 this.showNotification('Producto agregado al carrito', 'success');
@@ -442,10 +924,10 @@ class EstherApp {
         if (cartCount) {
             cartCount.textContent = count;
         }
-        
+
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
-        
+
         if (cartItems && cartTotal) {
             if (this.cart.length === 0) {
                 cartItems.innerHTML = `
@@ -457,12 +939,12 @@ class EstherApp {
                 cartTotal.textContent = '$0.00';
                 return;
             }
-            
+
             let total = 0;
             cartItems.innerHTML = this.cart.map(item => {
                 const itemTotal = item.precio * item.cantidad;
                 total += itemTotal;
-                
+
                 return `
                     <div class="cart-item" data-id="${item.id}">
                         <img src="${item.imagen_url}" 
@@ -494,7 +976,7 @@ class EstherApp {
                     </div>
                 `;
             }).join('');
-            
+
             cartTotal.textContent = `$${total.toFixed(2)}`;
         }
     }
@@ -515,9 +997,9 @@ class EstherApp {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 await this.loadCart();
                 this.showNotification('Producto eliminado del carrito', 'info');
@@ -552,9 +1034,9 @@ class EstherApp {
                 },
                 body: JSON.stringify({ cantidad: newQuantity })
             });
-            
+
             const data = await response.json();
-            
+
             if (data.success) {
                 await this.loadCart();
             }
@@ -563,39 +1045,236 @@ class EstherApp {
         }
     }
 
-    async checkout() {
-        if (!this.currentUser) {
-            this.showNotification('Por favor inicia sesión para continuar', 'warning');
-            this.showLoginModal();
-            return;
-        }
-
+    // ========== CHECKOUT Y PAGO ==========
+    async renderCheckout() {
         if (this.cart.length === 0) {
             this.showNotification('Tu carrito está vacío', 'warning');
+            this.loadSection('catalogo');
             return;
         }
 
-        try {
-            const response = await fetch(`${this.apiBase}/pedidos`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                this.showNotification(`¡Pedido #${data.pedidoId} creado exitosamente!`, 'success');
-                this.cart = [];
-                this.updateCartUI();
-                this.closeCart();
-            } else {
-                throw new Error(data.error);
+        const content = document.getElementById('content');
+        const total = this.cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        const tax = total * 0.16;
+        const grandTotal = total + tax;
+
+        content.innerHTML = `
+            <section class="checkout-section">
+                <div class="container">
+                    <div class="checkout-header">
+                        <h2><i class="fas fa-lock"></i> Finalizar Compra</h2>
+                        <p>Completa tu información para procesar el pedido</p>
+                    </div>
+                    
+                    <div class="checkout-grid">
+                        <div class="checkout-form-container">
+                            <div class="checkout-step active">
+                                <div class="step-header">
+                                    <span class="step-number">1</span>
+                                    <h3>Información de envío</h3>
+                                </div>
+                                <div class="step-content">
+                                    <form id="shipping-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="shipping-name">Nombre completo *</label>
+                                                <input type="text" id="shipping-name" 
+                                                       value="${this.currentUser ? this.currentUser.nombre : ''}"
+                                                       required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipping-phone">Teléfono *</label>
+                                                <input type="tel" id="shipping-phone" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="shipping-address">Dirección *</label>
+                                            <input type="text" id="shipping-address" 
+                                                   placeholder="Calle, número, colonia" required>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="shipping-city">Ciudad *</label>
+                                                <input type="text" id="shipping-city" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipping-state">Estado *</label>
+                                                <input type="text" id="shipping-state" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipping-zip">Código Postal *</label>
+                                                <input type="text" id="shipping-zip" required>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-summary">
+                            <div class="summary-header">
+                                <h3>Resumen del pedido</h3>
+                            </div>
+                            
+                            <div class="order-items">
+                                ${this.cart.map(item => `
+                                    <div class="order-item">
+                                        <img src="${item.imagen_url}" 
+                                             alt="${item.nombre}"
+                                             onerror="this.onerror=null; this.src='https://via.placeholder.com/60x60/1a1a1a/ffffff?text=E'">
+                                        <div class="item-details">
+                                            <h4>${item.nombre}</h4>
+                                            <span class="item-meta">${item.material_elegido || 'Estándar'}</span>
+                                        </div>
+                                        <div class="item-quantity">${item.cantidad} x</div>
+                                        <div class="item-price">$${(item.precio * item.cantidad).toFixed(2)}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="summary-totals">
+                                <div class="total-row">
+                                    <span>Subtotal</span>
+                                    <span>$${total.toFixed(2)}</span>
+                                </div>
+                                <div class="total-row">
+                                    <span>Envío</span>
+                                    <span>Gratis</span>
+                                </div>
+                                <div class="total-row">
+                                    <span>Impuestos (16%)</span>
+                                    <span>$${tax.toFixed(2)}</span>
+                                </div>
+                                <div class="total-row grand-total">
+                                    <span>Total</span>
+                                    <span>$${grandTotal.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-actions">
+                                <button id="confirm-payment" class="btn-checkout-full">
+                                    <i class="fas fa-lock"></i> Confirmar y pagar $${grandTotal.toFixed(2)}
+                                </button>
+                                <p class="secure-payment">
+                                    <i class="fas fa-shield-alt"></i> Pago 100% seguro
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+
+        // Configurar evento después de renderizar
+        setTimeout(() => {
+            const confirmBtn = document.getElementById('confirm-payment');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => this.processPayment());
             }
-        } catch (error) {
-            this.showNotification(error.message || 'Error al procesar el pedido', 'error');
+        }, 100);
+    }
+
+    async processPayment() {
+        // Validar formulario
+        const required = ['shipping-name', 'shipping-phone', 'shipping-address', 'shipping-city', 'shipping-state', 'shipping-zip'];
+        let isValid = true;
+
+        required.forEach(id => {
+            const input = document.getElementById(id);
+            if (!input || !input.value.trim()) {
+                if (input) input.style.borderColor = '#ff4444';
+                isValid = false;
+            } else if (input) {
+                input.style.borderColor = '';
+            }
+        });
+
+        if (!isValid) {
+            this.showNotification('Por favor completa todos los campos obligatorios (*)', 'error');
+            return;
         }
+
+        this.showNotification('Procesando pago...', 'info');
+
+        // Simular procesamiento
+        setTimeout(async () => {
+            try {
+                if (this.currentUser) {
+                    const response = await fetch(`${this.apiBase}/pedidos`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.showNotification(`¡Pago exitoso! Pedido #${data.pedidoId} confirmado`, 'success');
+                        this.cart = [];
+                        localStorage.removeItem('guest_cart');
+                        this.updateCartUI();
+
+                        // Mostrar confirmación
+                        this.showOrderConfirmation(data.pedidoId);
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } else {
+                    // Para invitados
+                    const orderId = 'GUEST-' + Date.now();
+                    this.showNotification('¡Pago exitoso! Tu pedido ha sido procesado', 'success');
+                    this.cart = [];
+                    localStorage.removeItem('guest_cart');
+                    this.updateCartUI();
+                    this.showOrderConfirmation(orderId);
+                }
+            } catch (error) {
+                this.showNotification(error.message || 'Error al procesar el pago', 'error');
+            }
+        }, 2000);
+    }
+
+    showOrderConfirmation(orderId) {
+        const content = document.getElementById('content');
+        content.innerHTML = `
+            <section class="confirmation-section">
+                <div class="container">
+                    <div class="confirmation-card">
+                        <div class="confirmation-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h2>¡Gracias por tu compra!</h2>
+                            <p>Tu pedido ha sido confirmado</p>
+                        </div>
+                        
+                        <div class="confirmation-body">
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <span>Número de pedido:</span>
+                                    <strong>${orderId}</strong>
+                                </div>
+                                <div class="info-item">
+                                    <span>Fecha:</span>
+                                    <strong>${new Date().toLocaleDateString()}</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="confirmation-message">
+                                <p>Nuestro equipo se pondrá en contacto contigo para coordinar la entrega.</p>
+                            </div>
+                            
+                            <div class="confirmation-actions">
+                                <button onclick="app.loadSection('catalogo')" class="btn-primary">
+                                    <i class="fas fa-shopping-bag"></i> Seguir comprando
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
     }
 
     // ========== UI HELPERS ==========
@@ -603,7 +1282,6 @@ class EstherApp {
         const modal = document.getElementById('login-modal');
         if (modal) {
             modal.style.display = 'flex';
-            document.querySelector('.tab-btn[data-tab="login"]').click();
         }
     }
 
@@ -611,11 +1289,11 @@ class EstherApp {
         const modal = document.getElementById('login-modal');
         if (modal) {
             modal.style.display = 'none';
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            if (loginForm) loginForm.reset();
-            if (registerForm) registerForm.reset();
         }
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        if (loginForm) loginForm.reset();
+        if (registerForm) registerForm.reset();
     }
 
     openCart() {
@@ -632,11 +1310,6 @@ class EstherApp {
         }
     }
 
-    showUserMenu() {
-        // Implementar menú de usuario si es necesario
-        this.showNotification(`Hola ${this.currentUser.nombre}`, 'info');
-    }
-
     showNotification(message, type = 'info') {
         // Crear notificación
         const notification = document.createElement('div');
@@ -645,15 +1318,15 @@ class EstherApp {
             <span>${message}</span>
             <button class="notification-close">&times;</button>
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         // Auto-remover después de 5 segundos
         setTimeout(() => {
             notification.classList.add('fade-out');
             setTimeout(() => notification.remove(), 300);
         }, 5000);
-        
+
         // Cerrar manualmente
         notification.querySelector('.notification-close').addEventListener('click', () => {
             notification.classList.add('fade-out');
@@ -662,10 +1335,12 @@ class EstherApp {
     }
 
     setupEventListeners() {
-        // Login/Register forms
+        console.log('🔧 Configurando event listeners...');
+
+        // ========== LOGIN/REGISTER ==========
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
-        
+
         if (loginForm) {
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -674,7 +1349,7 @@ class EstherApp {
                 await this.login(email, password);
             });
         }
-        
+
         if (registerForm) {
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -685,8 +1360,8 @@ class EstherApp {
                 await this.register(nombre, email, password, confirmPassword);
             });
         }
-        
-        // Modal tabs
+
+        // ========== MODAL TABS ==========
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tab = btn.dataset.tab;
@@ -697,212 +1372,70 @@ class EstherApp {
                 if (form) form.classList.add('active');
             });
         });
-        
-        // Carrito
+
+        // ========== CARRITO ==========
         const cartBtn = document.getElementById('cart-btn');
         const closeCartBtn = document.querySelector('.close-cart');
         const checkoutBtn = document.getElementById('checkout-btn');
-        
+
         if (cartBtn) {
-            cartBtn.addEventListener('click', () => this.openCart());
+            cartBtn.addEventListener('click', () => {
+                console.log('🛒 Abriendo carrito...');
+                this.openCart();
+            });
         }
-        
+
         if (closeCartBtn) {
-            closeCartBtn.addEventListener('click', () => this.closeCart());
+            closeCartBtn.addEventListener('click', () => {
+                console.log('❌ Cerrando carrito...');
+                this.closeCart();
+            });
         }
-        
+
         if (checkoutBtn) {
-            checkoutBtn.addEventListener('click', () => this.checkout());
+            checkoutBtn.addEventListener('click', () => {
+                console.log('💰 Procesando checkout...');
+                if (this.cart.length === 0) {
+                    this.showNotification('Tu carrito está vacío', 'warning');
+                    return;
+                }
+                this.loadSection('checkout');
+                this.closeCart();
+            });
         }
-        
-        // Cerrar modal
-        const closeModal = document.querySelector('.close-modal');
-        if (closeModal) {
-            closeModal.addEventListener('click', () => this.closeModal());
+
+        // ========== CERRAR MODAL ==========
+        const closeModalBtn = document.querySelector('.close-modal');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                console.log('❌ Cerrando modal...');
+                this.closeModal();
+            });
         }
-        
+
         window.addEventListener('click', (e) => {
             if (e.target.id === 'login-modal') {
                 this.closeModal();
             }
         });
-    }
 
-    // ========== RENDERIZADORES ADICIONALES ==========
-    async renderColecciones() {
-        const content = document.getElementById('content');
-        content.innerHTML = `
-            <section class="container">
-                <div class="catalogo-header">
-                    <h2>Nuestras Colecciones</h2>
-                    <p>Descubre nuestras líneas exclusivas</p>
-                </div>
-                <div class="catalogo-grid">
-                    <div class="producto-card">
-                        <div class="producto-img-container" style="background: linear-gradient(45deg, #D4AF37, #FFD700);">
-                            <i class="fas fa-crown" style="font-size: 4rem; color: white; margin: auto;"></i>
-                        </div>
-                        <div class="producto-info">
-                            <h3 class="producto-nombre">Colección Oro</h3>
-                            <p class="producto-desc">Piezas en oro 18k y 24k con diamantes y piedras preciosas.</p>
-                            <div class="producto-footer">
-                                <span class="producto-precio">Desde $2,500</span>
-                                <button class="btn-add-cart" onclick="app.loadSection('catalogo')">
-                                    <i class="fas fa-eye"></i> Ver
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="producto-card">
-                        <div class="producto-img-container" style="background: linear-gradient(45deg, #C0C0C0, #E8E8E8);">
-                            <i class="fas fa-snowflake" style="font-size: 4rem; color: #333; margin: auto;"></i>
-                        </div>
-                        <div class="producto-info">
-                            <h3 class="producto-nombre">Colección Plata</h3>
-                            <p class="producto-desc">Plata esterlina 925 con diseños modernos y clásicos.</p>
-                            <div class="producto-footer">
-                                <span class="producto-precio">Desde $1,200</span>
-                                <button class="btn-add-cart" onclick="app.loadSection('catalogo')">
-                                    <i class="fas fa-eye"></i> Ver
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="producto-card">
-                        <div class="producto-img-container" style="background: linear-gradient(45deg, #800020, #A52A2A);">
-                            <i class="fas fa-heart" style="font-size: 4rem; color: white; margin: auto;"></i>
-                        </div>
-                        <div class="producto-info">
-                            <h3 class="producto-nombre">Línea Romántica</h3>
-                            <p class="producto-desc">Diseños con corazones, flores y motivos amorosos.</p>
-                            <div class="producto-footer">
-                                <span class="producto-precio">Desde $1,800</span>
-                                <button class="btn-add-cart" onclick="app.loadSection('catalogo')">
-                                    <i class="fas fa-eye"></i> Ver
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        `;
-    }
-
-    async renderSobre() {
-        const content = document.getElementById('content');
-        content.innerHTML = `
-            <section class="container" style="padding: 5rem 0;">
-                <div class="catalogo-header">
-                    <h2>La Maison Esther</h2>
-                </div>
-                
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-                        Desde 1995, Esther Accessories ha sido sinónimo de excelencia en el arte de la joyería. 
-                        Cada pieza es creada con pasión y dedicación por nuestros maestros artesanos, quienes 
-                        combinan técnicas tradicionales con un diseño contemporáneo.
-                    </p>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 3rem 0;">
-                        <div>
-                            <h3 style="color: var(--oro); margin-bottom: 1rem;">Nuestra Filosofía</h3>
-                            <p>Creemos que cada joya debe contar una historia y reflejar la personalidad de quien la lleva.</p>
-                        </div>
-                        <div>
-                            <h3 style="color: var(--oro); margin-bottom: 1rem;">Compromiso con la Calidad</h3>
-                            <p>Utilizamos sólo los mejores materiales: oro, plata, diamantes y piedras preciosas de origen ético.</p>
-                        </div>
-                    </div>
-                    
-                    <div style="background: rgba(212, 175, 55, 0.1); padding: 2rem; border-radius: 10px; margin-top: 3rem;">
-                        <h3 style="color: var(--oro); margin-bottom: 1rem;">Visítanos</h3>
-                        <p>📍 Panamá<br>
-                           📞 +507 6868-9946<br>
-                           ✉️ contacto@estheraccessories.com<br>
-                           🕒 Lunes a Viernes: 10:00 - 19:00</p>
-                    </div>
-                </div>
-            </section>
-        `;
-    }
-
-    async renderContacto() {
-        const content = document.getElementById('content');
-        content.innerHTML = `
-            <section class="container" style="padding: 5rem 0;">
-                <div class="catalogo-header">
-                    <h2>Contacto</h2>
-                    <p>Estamos aquí para ayudarte</p>
-                </div>
-                
-                <div style="max-width: 600px; margin: 0 auto;">
-                    <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                        <form id="contact-form">
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; color: var(--negro); font-weight: 500;">Nombre</label>
-                                <input type="text" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 5px;" required>
-                            </div>
-                            
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; color: var(--negro); font-weight: 500;">Email</label>
-                                <input type="email" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 5px;" required>
-                            </div>
-                            
-                            <div style="margin-bottom: 1.5rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; color: var(--negro); font-weight: 500;">Mensaje</label>
-                                <textarea style="width: 100%; padding: 0.8rem; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 5px; min-height: 150px;" required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn-primary" style="width: 100%;">
-                                <i class="fas fa-paper-plane"></i> Enviar Mensaje
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <div style="margin-top: 3rem; text-align: center;">
-                        <p>O contáctanos directamente:</p>
-                        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
-                            <a href="tel:+525512345678" style="color: var(--oro); text-decoration: none;">
-                                <i class="fas fa-phone"></i> Llamar
-                            </a>
-                            <a href="mailto:contacto@estheraccessories.com" style="color: var(--oro); text-decoration: none;">
-                                <i class="fas fa-envelope"></i> Email
-                            </a>
-                            <a href="https://wa.me/50768689946" style="color: var(--oro); text-decoration: none;">
-                                <i class="fab fa-whatsapp"></i> WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        `;
-        
-        // Formulario de contacto
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.showNotification('Mensaje enviado. Nos pondremos en contacto pronto.', 'success');
-                contactForm.reset();
+        // ========== MENÚ MÓVIL ==========
+        const navToggle = document.getElementById('nav-toggle');
+        if (navToggle) {
+            navToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const navMenu = document.querySelector('.nav-menu');
+                if (navMenu) {
+                    navMenu.classList.toggle('active');
+                }
             });
         }
+
+        console.log('✅ Event listeners configurados');
     }
 }
 
-// Inicializar la aplicación
-const app = new EstherApp();
-window.app = app;
-
-// Hacer que la navegación funcione inmediatamente
+// Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    // Cargar la sección de inicio por defecto
-    app.loadSection('inicio');
-    
-    // Marcar el enlace de inicio como activo
-    const inicioLink = document.querySelector('.nav-link[href="#inicio"]');
-    if (inicioLink) {
-        inicioLink.classList.add('active');
-    }
+    window.app = new EstherApp();
 });
