@@ -4,7 +4,6 @@ class EstherApp {
         this.currentUser = null;
         this.cart = [];
         this.init();
-        // En el constructor de EstherApp, después de init():
         console.log('🎯 Elementos DOM encontrados:');
         console.log('Login button:', document.getElementById('login-btn'));
         console.log('Cart button:', document.getElementById('cart-btn'));
@@ -22,7 +21,6 @@ class EstherApp {
         this.setupNavigation();
         await this.loadInitialData();
     }
-    // ========== SECCIONES FALTANTES ==========
 
     async renderColecciones() {
         const content = document.getElementById('content');
@@ -121,7 +119,7 @@ class EstherApp {
                 <div class="sobre-content">
                     <div class="sobre-historia">
                         <h3>Nuestra Historia</h3>
-                        <p>Fundada en 1995 por Esther Rodríguez, nuestra maison nació con la visión de crear joyas que contaran historias. Lo que comenzó como un pequeño taller familiar en el corazón de la Ciudad de México, hoy se ha convertido en un referente de la joyería artesanal de alta gama.</p>
+                        <p>Fundada en 1995 por Esther Rodríguez, nuestra maison nació con la visión de crear joyas que contaran historias. Lo que comenzó como un pequeño taller familiar en el corazón de Panama, hoy se ha convertido en un referente de la joyería artesanal de alta gama.</p>
                         
                         <p>Cada pieza de Esther Accessories es el resultado de horas de trabajo dedicado, donde la pasión por el detalle y el respeto por las técnicas tradicionales se combinan con un diseño contemporáneo y visionario.</p>
                         
@@ -228,9 +226,9 @@ class EstherApp {
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
                                 <h4>Visítanos</h4>
-                                <p>Av. Paseo de la Reforma 123</p>
-                                <p>Col. Juárez, Cuauhtémoc</p>
-                                <p>Ciudad de México, 06600</p>
+                                <p>Av. Tocumen</p>
+                                <p>Tocumen</p>
+                                <p>Panamá, 06600</p>
                             </div>
                         </div>
                         
@@ -248,9 +246,9 @@ class EstherApp {
                             <i class="fas fa-phone"></i>
                             <div>
                                 <h4>Teléfonos</h4>
-                                <p><strong>Ventas:</strong> +52 55 1234 5678</p>
-                                <p><strong>WhatsApp:</strong> +52 55 8765 4321</p>
-                                <p><strong>Servicio al cliente:</strong> 800 123 4567</p>
+                                <p><strong>Ventas:</strong> +507 6868-9946</p>
+                                <p><strong>WhatsApp:</strong> +507 6868-9946</p>
+                                <p><strong>Servicio al cliente:</strong> +507 6868-9946</p>
                             </div>
                         </div>
                         
@@ -337,8 +335,8 @@ class EstherApp {
                             <i class="fas fa-map-marked-alt"></i>
                             <div>
                                 <h4>Esther Accessories Boutique</h4>
-                                <p>Av. Paseo de la Reforma 123, Ciudad de México</p>
-                                <p><strong>Metro más cercano:</strong> Estación Insurgentes (Línea 1)</p>
+                                <p>Av. Tocumen</p>
+                                <p><strong>Metro más cercano:</strong> Estación Tocumen (Línea 2)</p>
                                 <p><strong>Estacionamiento:</strong> Disponible en el edificio</p>
                             </div>
                         </div>
@@ -423,6 +421,8 @@ class EstherApp {
                 localStorage.removeItem('user');
             }
         }
+        this.updateAuthUI(); 
+        await this.loadCart();
     }
 
     updateAuthUI() {
@@ -555,26 +555,31 @@ class EstherApp {
 
     // ========== NAVEGACIÓN ==========
     setupNavigation() {
-        // Navegación principal
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = link.getAttribute('href').substring(1);
+        document.querySelectorAll('.nav-link, .user-menu-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Si es el botón de cerrar sesión, dejamos que updateAuthUI lo maneje
+            if (link.id === 'logout-btn') return; 
 
-                // Actualizar clase activa
+            e.preventDefault();
+            const target = link.getAttribute('href').substring(1);
+
+            // Actualizar clase activa solo si es un link del navbar principal
+            if (link.classList.contains('nav-link')) {
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
+            }
 
-                // Cargar sección
-                this.loadSection(target);
+            // Cargar sección
+            this.loadSection(target);
 
-                // Cerrar menú móvil
-                const navMenu = document.querySelector('.nav-menu');
-                if (navMenu && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                }
-            });
+            // Cerrar menú móvil y menú de usuario si están abiertos
+            const navMenu = document.querySelector('.nav-menu');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (navMenu) navMenu.classList.remove('active');
+            if (userMenu) userMenu.classList.remove('show');
         });
+    });
 
         // Logo también lleva al inicio
         document.querySelector('.logo-link').addEventListener('click', (e) => {
@@ -1435,7 +1440,6 @@ class EstherApp {
     }
 }
 
-// Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new EstherApp();
 });
