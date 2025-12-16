@@ -24,10 +24,10 @@ class EstherApp {
     }
     // ========== SECCIONES FALTANTES ==========
 
-async renderColecciones() {
-    const content = document.getElementById('content');
-    
-    content.innerHTML = `
+    async renderColecciones() {
+        const content = document.getElementById('content');
+
+        content.innerHTML = `
         <section class="colecciones-section">
             <div class="container">
                 <div class="colecciones-header">
@@ -105,12 +105,12 @@ async renderColecciones() {
             </div>
         </section>
     `;
-}
+    }
 
-async renderSobre() {
-    const content = document.getElementById('content');
-    
-    content.innerHTML = `
+    async renderSobre() {
+        const content = document.getElementById('content');
+
+        content.innerHTML = `
         <section class="sobre-section">
             <div class="container">
                 <div class="sobre-header">
@@ -209,12 +209,12 @@ async renderSobre() {
             </div>
         </section>
     `;
-}
+    }
 
-async renderContacto() {
-    const content = document.getElementById('content');
-    
-    content.innerHTML = `
+    async renderContacto() {
+        const content = document.getElementById('content');
+
+        content.innerHTML = `
         <section class="contacto-section">
             <div class="container">
                 <div class="contacto-header">
@@ -351,53 +351,53 @@ async renderContacto() {
             </div>
         </section>
     `;
-    
-    // Configurar el formulario de contacto
-    setTimeout(() => {
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.showNotification('Mensaje enviado. Te contactaremos pronto.', 'success');
-                contactForm.reset();
-            });
-        }
-    }, 100);
-}
 
-// Método para filtrar por colección (se llama desde los botones de colecciones)
-filterColeccion(tipo) {
-    // Redirigir al catálogo con filtro
-    this.loadSection('catalogo');
-    
-    // Después de cargar el catálogo, aplicar filtro
-    setTimeout(() => {
-        const categoryFilter = document.getElementById('category-filter');
-        const searchInput = document.getElementById('search-products');
-        
-        if (categoryFilter && searchInput) {
-            switch(tipo) {
-                case 'oro':
-                    categoryFilter.value = 'collares';
-                    searchInput.value = 'oro';
-                    break;
-                case 'plata':
-                    categoryFilter.value = 'pulseras';
-                    searchInput.value = 'plata';
-                    break;
-                case 'romantica':
-                    searchInput.value = 'corazón flor';
-                    break;
-                case 'minimalista':
-                    searchInput.value = 'simple elegante';
-                    break;
+        // Configurar el formulario de contacto
+        setTimeout(() => {
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.showNotification('Mensaje enviado. Te contactaremos pronto.', 'success');
+                    contactForm.reset();
+                });
             }
-            
-            // Disparar el evento de búsqueda
-            this.searchProducts();
-        }
-    }, 500);
-}
+        }, 100);
+    }
+
+    // Método para filtrar por colección (se llama desde los botones de colecciones)
+    filterColeccion(tipo) {
+        // Redirigir al catálogo con filtro
+        this.loadSection('catalogo');
+
+        // Después de cargar el catálogo, aplicar filtro
+        setTimeout(() => {
+            const categoryFilter = document.getElementById('category-filter');
+            const searchInput = document.getElementById('search-products');
+
+            if (categoryFilter && searchInput) {
+                switch (tipo) {
+                    case 'oro':
+                        categoryFilter.value = 'collares';
+                        searchInput.value = 'oro';
+                        break;
+                    case 'plata':
+                        categoryFilter.value = 'pulseras';
+                        searchInput.value = 'plata';
+                        break;
+                    case 'romantica':
+                        searchInput.value = 'corazón flor';
+                        break;
+                    case 'minimalista':
+                        searchInput.value = 'simple elegante';
+                        break;
+                }
+
+                // Disparar el evento de búsqueda
+                this.searchProducts();
+            }
+        }, 500);
+    }
 
     // ========== AUTENTICACIÓN ==========
     async checkAuth() {
@@ -771,17 +771,17 @@ filterColeccion(tipo) {
             <div class="producto-card" data-id="${producto.id}">
                 ${producto.destacado ? '<div class="producto-badge destacado"><i class="fas fa-crown"></i> Destacado</div>' : ''}
                 <div class="producto-img-container">
-                    <img src="${producto.imagen_url}" 
-                         alt="${producto.nombre}" 
-                         class="producto-img"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Esther+Accessories'">
+                    <img src="${producto.imagen}" 
+                        alt="${producto.nombre}" 
+                        class="producto-img"
+                        onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Esther+Accessories'">
                 </div>
-                <div class="producto-info">
-                    <h3 class="producto-nombre">${producto.nombre}</h3>
-                    <div class="producto-meta">
-                        <span class="producto-categoria">${this.formatCategoria(producto.categoria)}</span>
-                        <span class="producto-materiales">${producto.materiales}</span>
-                    </div>
+            <div class="producto-info">
+                <h3 class="producto-nombre">${producto.nombre}</h3>
+                <div class="producto-meta">
+                    <span class="producto-categoria">${this.formatCategoria(producto.categoria)}</span>
+                    <span class="producto-materiales">${producto.material}</span>
+                </div>
                     <p class="producto-desc">${producto.descripcion ? producto.descripcion.substring(0, 100) + '...' : 'Sin descripción'}</p>
                     <div class="producto-footer">
                         <span class="producto-precio">$${parseFloat(producto.precio).toFixed(2)}</span>
@@ -872,7 +872,7 @@ filterColeccion(tipo) {
                             producto_id: productId,
                             nombre: producto.nombre,
                             precio: producto.precio,
-                            imagen_url: producto.imagen_url,
+                            imagen_url: producto.imagen,  // <--- CAMBIO: Asignamos 'imagen' a 'imagen_url' para que el carrito lo entienda
                             cantidad: 1,
                             material_elegido: 'Estándar',
                             tamaño: 'Único'
