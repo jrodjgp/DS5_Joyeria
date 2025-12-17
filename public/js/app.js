@@ -776,7 +776,7 @@ class EstherApp {
             <div class="producto-card" data-id="${producto.id}">
                 ${producto.destacado ? '<div class="producto-badge destacado"><i class="fas fa-crown"></i> Destacado</div>' : ''}
                 <div class="producto-img-container">
-                    <img src="${producto.imagen}" 
+                    <img src="${producto.imagen_url}" 
                         alt="${producto.nombre}" 
                         class="producto-img"
                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Esther+Accessories'">
